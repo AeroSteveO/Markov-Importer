@@ -36,10 +36,31 @@ public class MarkovImporter {
     public static void main(String[] args) throws FileNotFoundException {
         // TODO code application logic here
         ArrayList<String> rawLogs = getLogs(getLogList());
+        ArrayList<String> removedStamps = removeTimeStamp(rawLogs);
+        ArrayList<String> removedNicks = removeNick(removedStamps);
+        
+        
+        
+        
+        
+        
+        
+        
         
         
         
         System.out.printf("Parsed %d lines\n", rawLogs.size());
+        for (int i=0;i<3;i++)
+            System.out.printf(rawLogs.get(i)+"\n");
+        
+        System.out.printf("Parsed %d lines\n", removedStamps.size());
+        for (int i=0;i<3;i++)
+            System.out.printf(removedStamps.get(i)+"\n");
+        
+        System.out.printf("Parsed %d lines\n", removedNicks.size());
+        for (int i=0;i<3;i++)
+            System.out.printf(removedNicks.get(i)+"\n");
+        
     }
     public ArrayList<String> getBotList() throws FileNotFoundException{
         try{
@@ -111,5 +132,43 @@ public class MarkovImporter {
             System.out.printf(fileName+"\n");
             return null;
         }
+    }
+    public static ArrayList<String> removeTimeStamp(ArrayList<String> rawlog) throws FileNotFoundException{
+        ArrayList<String> log = new ArrayList<String>();
+//        String[] line = new String();
+//        String formedLine;
+        for (int i = 0;i<rawlog.size();i++)
+            if (!rawlog.get(i).startsWith("****")){
+                String[] line = rawlog.get(i).split(" ");
+                if (line.length>4){
+                    if (!line[3].startsWith("*")){
+                        String formedLine = "";
+                        for(int c = 3;c<line.length;c++){
+                            formedLine = formedLine +" "+ line[c];
+                        }
+                        log.add(filterString(formedLine));
+                        
+                    }
+                }
+            }
+        return(log);
+    }
+    private static String filterString(String inputLine) {
+        inputLine = inputLine.replaceAll("\\! ", "!. ");
+        inputLine = inputLine.replaceAll("\\? ", "?. ");
+        inputLine = inputLine.replaceAll("[\r\n\"]","");
+        inputLine = inputLine.replaceAll("\t", " ");
+        inputLine = inputLine.trim();   //Remove leading/trailing whitespace
+        return inputLine;
+    }
+    public static ArrayList<String> removeNick(ArrayList<String> rawlog) throws FileNotFoundException{
+        ArrayList<String> log = new ArrayList<String>();
+//        String formedLine;
+        for (int i = 0;i<rawlog.size();i++){
+            String[] line = rawlog.get(i).split(">");
+            if (line.length>=2)
+                log.add(line[line.length-1]);
+        }
+        return(log);
     }
 }
