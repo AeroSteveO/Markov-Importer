@@ -9,6 +9,7 @@ package markovimporter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Scanner;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.jborg.JBorg;
@@ -27,14 +28,14 @@ public class MarkovImporter {
     
     JBorg Borg = new JBorg(1,10);
     boolean loaded =Borg.loadWords(markovFile);
-    
+    ArrayList<String> rawLogs = null;
     
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // TODO code application logic here
-
+        rawLogs = getLogs(getLogList())
         
         
         
@@ -72,5 +73,42 @@ public class MarkovImporter {
             i++;
         }
         return(bot);
+    }
+    public ArrayList<String> getLogList() throws FileNotFoundException{
+        try{
+            ArrayList<String> bots = new ArrayList<String>();
+            File fXmlFile = new File("SettingMarkov.xml");
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Element eElement = (Element) dBuilder.parse(fXmlFile).getElementsByTagName("importsettings").item(0);
+            for (int i=0;i<eElement.getElementsByTagName("file").getLength();i++)
+            {
+                bots.add(eElement.getElementsByTagName("file").item(i).getTextContent()+".txt");
+            }
+            return (bots);
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+            return(null);
+        }
+    }
+    public ArrayList<String> getLogs(ArrayList<String> fileNameList) throws FileNotFoundException{
+        ArrayList<String> log = new ArrayList<String>();
+        String fileName = null;
+        try{
+            for(int i=0;i<fileNameList.size();i++){
+                fileName = fileNameList.get(i);
+                
+                Scanner wordfile = new Scanner(new File(fileName));
+                while (wordfile.hasNextLine()){
+                    log.add(wordfile.nextLine());
+                }
+                wordfile.close();
+            }
+            return (log);
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 }
