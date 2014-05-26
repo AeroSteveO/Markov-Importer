@@ -28,18 +28,18 @@ public class MarkovImporter {
     
     JBorg Borg = new JBorg(1,10);
     boolean loaded =Borg.loadWords(markovFile);
-    ArrayList<String> rawLogs = null;
+    
     
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         // TODO code application logic here
-        rawLogs = getLogs(getLogList())
+        ArrayList<String> rawLogs = getLogs(getLogList());
         
         
         
-        
+        System.out.printf("Parsed %d lines\n", rawLogs.size());
     }
     public ArrayList<String> getBotList() throws FileNotFoundException{
         try{
@@ -74,7 +74,7 @@ public class MarkovImporter {
         }
         return(bot);
     }
-    public ArrayList<String> getLogList() throws FileNotFoundException{
+    public static ArrayList<String> getLogList() throws FileNotFoundException{
         try{
             ArrayList<String> bots = new ArrayList<String>();
             File fXmlFile = new File("SettingMarkov.xml");
@@ -83,7 +83,7 @@ public class MarkovImporter {
             Element eElement = (Element) dBuilder.parse(fXmlFile).getElementsByTagName("importsettings").item(0);
             for (int i=0;i<eElement.getElementsByTagName("file").getLength();i++)
             {
-                bots.add(eElement.getElementsByTagName("file").item(i).getTextContent()+".txt");
+                bots.add(eElement.getElementsByTagName("file").item(i).getTextContent()+".log");
             }
             return (bots);
         }
@@ -92,7 +92,7 @@ public class MarkovImporter {
             return(null);
         }
     }
-    public ArrayList<String> getLogs(ArrayList<String> fileNameList) throws FileNotFoundException{
+    public static ArrayList<String> getLogs(ArrayList<String> fileNameList) throws FileNotFoundException{
         ArrayList<String> log = new ArrayList<String>();
         String fileName = null;
         try{
@@ -108,6 +108,7 @@ public class MarkovImporter {
             return (log);
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
+            System.out.printf(fileName+"\n");
             return null;
         }
     }
