@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.jborg.JBorg;
@@ -26,7 +27,7 @@ public class MarkovImporter {
     int newLinesBeforeUpdate = 10;
     File markovFile = new File("MarkovWords.txt");
     
-    JBorg Borg = new JBorg(1,10);
+    static JBorg Borg = new JBorg(1,10);
     boolean loaded =Borg.loadWords(markovFile);
     
     
@@ -35,34 +36,37 @@ public class MarkovImporter {
      */
     public static void main(String[] args) throws FileNotFoundException {
         // TODO code application logic here
-        ArrayList<String> rawLogs = getLogs(getLogList());
-        ArrayList<String> removedStamps = removeTimeStamp(rawLogs);
-        ArrayList<String> removedNicks = removeNick(removedStamps);
+//        ArrayList<String> rawLogs = getLogs(getLogList());
+//        ArrayList<String> removedStamps = removeTimeStamp(rawLogs);
+//        ArrayList<String> removedNicks = removeNick(removedStamps);
+        
+        
+        ArrayList<String> parsedLogs = removeNick(removeTimeStamp(getLogs(getLogList())));
         
         
         
         
+        for (int i=0;i<parsedLogs.size();i++)
+            Borg.learn(parsedLogs.get(i));
         
         
+//        System.out.printf("Parsed %d lines\n", rawLogs.size());
+//        for (int i=0;i<3;i++)
+//            System.out.printf(rawLogs.get(i)+"\n");
+//
+//        System.out.printf("Parsed %d lines\n", removedStamps.size());
+//        for (int i=0;i<3;i++)
+//            System.out.printf(removedStamps.get(i)+"\n");
         
-        
-        
-        
-        
-        System.out.printf("Parsed %d lines\n", rawLogs.size());
+        System.out.printf("Parsed %d lines\n", parsedLogs.size());
         for (int i=0;i<3;i++)
-            System.out.printf(rawLogs.get(i)+"\n");
+            System.out.printf(parsedLogs.get(i)+"\n");
         
-        System.out.printf("Parsed %d lines\n", removedStamps.size());
-        for (int i=0;i<3;i++)
-            System.out.printf(removedStamps.get(i)+"\n");
-        
-        System.out.printf("Parsed %d lines\n", removedNicks.size());
-        for (int i=0;i<3;i++)
-            System.out.printf(removedNicks.get(i)+"\n");
+        File oddFile = new File("ImportedMarkov");
+        Borg.saveWords(oddFile);
         
     }
-    public ArrayList<String> getBotList() throws FileNotFoundException{
+    public static ArrayList<String> getBotList() throws FileNotFoundException{
         try{
             ArrayList<String> botlist = new ArrayList<String>();
             File fXmlFile = new File("SettingMarkov.xml");
@@ -80,7 +84,7 @@ public class MarkovImporter {
             return(null);
         }
     }
-    public boolean isBot(String nick) throws FileNotFoundException {
+    public static boolean isBot(String nick) throws FileNotFoundException {
         boolean bot = false;
         if (botlist==null){
             botlist = getBotList();
@@ -163,11 +167,19 @@ public class MarkovImporter {
     }
     public static ArrayList<String> removeNick(ArrayList<String> rawlog) throws FileNotFoundException{
         ArrayList<String> log = new ArrayList<String>();
-//        String formedLine;
         for (int i = 0;i<rawlog.size();i++){
-            String[] line = rawlog.get(i).split(">");
-            if (line.length>=2)
-                log.add(line[line.length-1]);
+            String[] line = rawlog.get(i).split(" ");
+            if (line.length>2){
+                String formedLine = line[1];
+                for(int c = 2;c<line.length;c++){
+                    formedLine = formedLine +" "+ line[c];
+                }
+                if (line[0].length()>2){
+                    String nick = line[0].substring(1,line[0].length()-2);
+                    if (!isBot(nick)&&!formedLine.toLowerCase().startsWith("tehfire")&&!formedLine.toLowerCase().startsWith("tehreq")&&!formedLine.startsWith("!")&&!formedLine.startsWith(".")&&!formedLine.toLowerCase().startsWith("zelda"))
+                        log.add(filterString(formedLine));
+                }
+            }
         }
         return(log);
     }

@@ -14,6 +14,7 @@
     <ignorebots id="dtella">
         <bot>NickServ</bot>
         <bot>ChanServ</bot>
+        <bot>***</bot>
         
         <bot>BlarghleBot</bot>
         <bot>theTardis</bot>
