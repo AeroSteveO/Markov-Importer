@@ -1,2 +1,6 @@
 /MarkovImporter/nbproject/private/
 /MarkovImporter/build/
+/bin
+/nbproject/private/
+/build/
+/dist/
