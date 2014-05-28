@@ -176,7 +176,7 @@ public class MarkovImporter {
                 }
                 if (line[0].length()>2){
                     String nick = line[0].substring(1,line[0].length()-2);
-                    if (!isBot(nick)&&!formedLine.toLowerCase().startsWith("tehfire")&&!formedLine.toLowerCase().startsWith("tehreq")&&!formedLine.startsWith("!")&&!formedLine.startsWith(".")&&!formedLine.toLowerCase().startsWith("zelda"))
+                    if (!isBot(nick)&&!formedLine.toLowerCase().startsWith("tehfire")&&!formedLine.toLowerCase().startsWith("tehreq")&&!formedLine.startsWith("!")&&!formedLine.startsWith(".")&&!formedLine.toLowerCase().startsWith("zelda")&&!Pattern.matches("[a-zA-Z_0-9]+?", formedLine.toLowerCase())&&!Pattern.matches("[a-zA-Z]{1}", formedLine))
                         log.add(filterString(formedLine));
                 }
             }
