@@ -38,10 +38,10 @@ public class MarkovImporter {
         // TODO code application logic here
 //        ArrayList<String> rawLogs = getLogs(getLogList());
 //        ArrayList<String> removedStamps = removeTimeStamp(rawLogs);
-//        ArrayList<String> removedNicks = removeNick(removedStamps);
+//        ArrayList<String> removedNicks = parseBadLines(removedStamps);
         
         
-        ArrayList<String> parsedLogs = removeNick(removeTimeStamp(getLogs(getLogList())));
+        ArrayList<String> parsedLogs = parseBadLines(removeTimeStamp(getLogs(getLogList())));
         
         
         
@@ -165,22 +165,40 @@ public class MarkovImporter {
         inputLine = inputLine.trim();   //Remove leading/trailing whitespace
         return inputLine;
     }
-    public static ArrayList<String> removeNick(ArrayList<String> rawlog) throws FileNotFoundException{
+    public static ArrayList<String> parseBadLines(ArrayList<String> rawlog) throws FileNotFoundException{
         ArrayList<String> log = new ArrayList<String>();
         for (int i = 0;i<rawlog.size();i++){
             String[] line = rawlog.get(i).split(" ");
+            String formedLine;
             if (line.length>2){
-                String formedLine = line[1];
+                if(Pattern.matches("\\[[0-9][0-9]:[0-9][0-9]:[0-9][0-9]\\]",line[1])){
+                    formedLine = line[2];
+                }
+                else{
+                    formedLine = line[1];
+                }
                 for(int c = 2;c<line.length;c++){
                     formedLine = formedLine +" "+ line[c];
                 }
                 if (line[0].length()>2){
                     String nick = line[0].substring(1,line[0].length()-2);
-                    if (!isBot(nick)&&!formedLine.toLowerCase().startsWith("tehfire")&&!formedLine.toLowerCase().startsWith("tehreq")&&!formedLine.startsWith("!")&&!formedLine.startsWith(".")&&!formedLine.toLowerCase().startsWith("zelda")&&!Pattern.matches("[a-zA-Z_0-9]+?", formedLine.toLowerCase())&&!Pattern.matches("[a-zA-Z]{1}", formedLine))
-                        log.add(filterString(formedLine));
+                    if (!isBot(nick)&&!formedLine.toLowerCase().startsWith("tehfire")&&!formedLine.toLowerCase().startsWith("tehreq")){
+                        if (!formedLine.startsWith("!")&&!formedLine.startsWith(".")&&!formedLine.toLowerCase().startsWith("zelda")){
+                            if(!Pattern.matches("[a-zA-Z_0-9]+?", formedLine.toLowerCase())&&!Pattern.matches("[a-zA-Z]{1}", formedLine)){
+                                if(!formedLine.equalsIgnoreCase("The TV listings for Dec 24 have been posted Type: !Forum TV Tonight")){
+                                    if(!Pattern.matches("[a-zA-Z_0-9]+\\++", formedLine.toLowerCase())){
+                                        if(!formedLine.toLowerCase().startsWith("bit.ly url")){
+                                            log.add(filterString(formedLine));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
         return(log);
     }
 }
+//<Solar> [02:04:16] womp

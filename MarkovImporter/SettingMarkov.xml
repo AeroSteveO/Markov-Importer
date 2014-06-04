@@ -43,6 +43,8 @@
         <bot>metapod</bot>
         <bot>Gollum</bot>
         <bot>butteredtoast</bot>
+        <bot>Wheatley</bot>
+        <bot>Saren</bot>
         <bot>harmony</bot>
         
         <bot>PRETOME</bot>
@@ -57,6 +59,7 @@
         <bot>TL-Monkey</bot>
         <bot>_AnnounceBot_</bot>
         <bot>TORRENTLEECH</bot>
+	<bot>r0b0t_1x</bot>
         
     </ignorebots>
     <importsettings>
@@ -71,6 +74,12 @@
         <file>znc dhirc backup-#dtella</file>
         <file>znc dhirc backup-#dtella2.0</file>
         <file>znc dhirc backup-#releaseteam</file>
+        <file>ZNC DTELLA-#rapterverse</file>
+        <file>znc dhirc backup-#rapterverse</file>
+        <file>NETWORK-#rapterverse</file>
+        <file>New Network-#rapterverse</file>
+        <file>ZNC DTELLA-#norahjaallowed</file>
+        <file>ZNC DTELLA-#SirMatthias</file>
         <file>New Network-#dtella</file>
         <file>dtella-#releaseteam</file>
         <file>dtella-#dtella</file>
