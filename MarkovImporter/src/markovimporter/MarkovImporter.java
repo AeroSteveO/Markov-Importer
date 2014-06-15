@@ -91,7 +91,6 @@ public class MarkovImporter {
         }
         int i=0;
         while(bot==false&&i<botlist.size()){
-            //for (int i=0;i<botlist.size();i++){
             if (nick.equalsIgnoreCase(botlist.get(i))){
                 bot=true;
             }
@@ -101,16 +100,16 @@ public class MarkovImporter {
     }
     public static ArrayList<String> getLogList() throws FileNotFoundException{
         try{
-            ArrayList<String> bots = new ArrayList<String>();
+            ArrayList<String> IrcLogList = new ArrayList<String>();
             File fXmlFile = new File("SettingMarkov.xml");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Element eElement = (Element) dBuilder.parse(fXmlFile).getElementsByTagName("importsettings").item(0);
             for (int i=0;i<eElement.getElementsByTagName("file").getLength();i++)
             {
-                bots.add(eElement.getElementsByTagName("file").item(i).getTextContent()+".log");
+                IrcLogList.add(eElement.getElementsByTagName("file").item(i).getTextContent()+".log");
             }
-            return (bots);
+            return (IrcLogList);
         }
         catch (Exception ex) {
             ex.printStackTrace();
@@ -120,8 +119,9 @@ public class MarkovImporter {
     public static ArrayList<String> getLogs(ArrayList<String> fileNameList) throws FileNotFoundException{
         ArrayList<String> log = new ArrayList<String>();
         String fileName = null;
-        try{
-            for(int i=0;i<fileNameList.size();i++){
+        
+        for(int i=0;i<fileNameList.size();i++){
+            try{
                 fileName = fileNameList.get(i);
                 
                 Scanner wordfile = new Scanner(new File(fileName));
@@ -129,18 +129,16 @@ public class MarkovImporter {
                     log.add(wordfile.nextLine());
                 }
                 wordfile.close();
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
+                System.out.printf(fileName+"\n");
+                return null;
             }
-            return (log);
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
-            System.out.printf(fileName+"\n");
-            return null;
         }
+        return (log);
     }
     public static ArrayList<String> removeTimeStamp(ArrayList<String> rawlog) throws FileNotFoundException{
         ArrayList<String> log = new ArrayList<String>();
-//        String[] line = new String();
-//        String formedLine;
         for (int i = 0;i<rawlog.size();i++)
             if (!rawlog.get(i).startsWith("****")){
                 String[] line = rawlog.get(i).split(" ");
@@ -151,7 +149,6 @@ public class MarkovImporter {
                             formedLine = formedLine +" "+ line[c];
                         }
                         log.add(filterString(formedLine));
-                        
                     }
                 }
             }
@@ -182,18 +179,19 @@ public class MarkovImporter {
                 }
                 if (line[0].length()>2){
                     String nick = line[0].substring(1,line[0].length()-2);
-                    if (!isBot(nick)&&!formedLine.toLowerCase().startsWith("tehfire")&&!formedLine.toLowerCase().startsWith("tehreq")){
-                        if (!formedLine.startsWith("!")&&!formedLine.startsWith(".")&&!formedLine.toLowerCase().startsWith("zelda")){
-                            if(!Pattern.matches("[a-zA-Z_0-9]+?", formedLine.toLowerCase())&&!Pattern.matches("[a-zA-Z]{1}", formedLine)){
-                                if(!formedLine.equalsIgnoreCase("The TV listings for Dec 24 have been posted Type: !Forum TV Tonight")){
-                                    if(!Pattern.matches("[a-zA-Z_0-9]+\\++", formedLine.toLowerCase())){
-                                        if(!formedLine.toLowerCase().startsWith("bit.ly url")){
-                                            log.add(filterString(formedLine));
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                    if (!isBot(nick)&&
+                            !formedLine.toLowerCase().startsWith("tehfire")&&
+                            !formedLine.toLowerCase().startsWith("tehreq")&&
+                            !formedLine.startsWith("!")&&
+                            !formedLine.startsWith(".")&&
+                            !formedLine.toLowerCase().startsWith("zelda")&&
+                            !formedLine.toLowerCase().startsWith("Wheatley, ")&&
+                            !Pattern.matches("[a-zA-Z_0-9]+?", formedLine.toLowerCase())&&
+                            !Pattern.matches("[a-zA-Z]{1}", formedLine)&&
+                            !formedLine.toLowerCase().startsWith("The TV listings for ")&&
+                            !Pattern.matches("[a-zA-Z_0-9]+\\++", formedLine.toLowerCase())&&
+                            !formedLine.toLowerCase().startsWith("bit.ly url")){
+                        log.add(filterString(formedLine));
                     }
                 }
             }
