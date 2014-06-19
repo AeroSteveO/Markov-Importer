@@ -22,13 +22,7 @@ import org.w3c.dom.Element;
  */
 public class MarkovImporter {
     static ArrayList<String> botlist = null;
-    int newLines = 0;
-    String previousMessage = new String();
-    int newLinesBeforeUpdate = 10;
-    File markovFile = new File("MarkovWords.txt");
-    
     static JBorg Borg = new JBorg(1,10);
-    boolean loaded =Borg.loadWords(markovFile);
     
     
     /**
@@ -91,7 +85,7 @@ public class MarkovImporter {
         }
         int i=0;
         while(bot==false&&i<botlist.size()){
-            if (nick.equalsIgnoreCase(botlist.get(i))){
+            if (nick.trim().equalsIgnoreCase(botlist.get(i))){
                 bot=true;
             }
             i++;
@@ -148,19 +142,11 @@ public class MarkovImporter {
                         for(int c = 3;c<line.length;c++){
                             formedLine = formedLine +" "+ line[c];
                         }
-                        log.add(filterString(formedLine));
+                        log.add(formedLine.trim());
                     }
                 }
             }
         return(log);
-    }
-    private static String filterString(String inputLine) {
-        inputLine = inputLine.replaceAll("\\! ", "!. ");
-        inputLine = inputLine.replaceAll("\\? ", "?. ");
-        inputLine = inputLine.replaceAll("[\r\n\"]","");
-        inputLine = inputLine.replaceAll("\t", " ");
-        inputLine = inputLine.trim();   //Remove leading/trailing whitespace
-        return inputLine;
     }
     public static ArrayList<String> parseBadLines(ArrayList<String> rawlog) throws FileNotFoundException{
         ArrayList<String> log = new ArrayList<String>();
@@ -191,7 +177,7 @@ public class MarkovImporter {
                             !formedLine.toLowerCase().startsWith("The TV listings for ")&&
                             !Pattern.matches("[a-zA-Z_0-9]+\\++", formedLine.toLowerCase())&&
                             !formedLine.toLowerCase().startsWith("bit.ly url")){
-                        log.add(filterString(formedLine));
+                        log.add(formedLine.trim());
                     }
                 }
             }
@@ -199,4 +185,3 @@ public class MarkovImporter {
         return(log);
     }
 }
-//<Solar> [02:04:16] womp
