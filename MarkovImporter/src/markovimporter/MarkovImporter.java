@@ -19,6 +19,8 @@ import org.w3c.dom.Element;
 /**
  *
  * @author Stephen
+ * Imports Xchat IRC logs into jborg, a java port of seeborg
+ * 
  */
 public class MarkovImporter {
     static ArrayList<String> botlist = null;
@@ -29,13 +31,12 @@ public class MarkovImporter {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws FileNotFoundException {
-        // TODO code application logic here
 //        ArrayList<String> rawLogs = getLogs(getLogList());
 //        ArrayList<String> removedStamps = removeTimeStamp(rawLogs);
 //        ArrayList<String> removedNicks = parseBadLines(removedStamps);
         
         
-        ArrayList<String> parsedLogs = parseBadLines(removeTimeStamp(getLogs(getLogList())));
+        ArrayList<String> parsedLogs = parseBadLines(removeTimeStamp(getLogs(getLogList())));//The heart of the parsing
         
         
         
@@ -52,9 +53,9 @@ public class MarkovImporter {
 //        for (int i=0;i<3;i++)
 //            System.out.printf(removedStamps.get(i)+"\n");
         
-        System.out.printf("Parsed %d lines\n", parsedLogs.size());
+        System.out.printf("Parsed %d lines\n", parsedLogs.size()); //Printing out some stats on the imported lines
         for (int i=0;i<3;i++)
-            System.out.printf(parsedLogs.get(i)+"\n");
+            System.out.printf(parsedLogs.get(i)+"\n");//Printing out some example lines
         
         File oddFile = new File("ImportedMarkov");
         Borg.saveWords(oddFile);
