@@ -63,36 +63,8 @@
         
     </ignorebots>
     <importsettings>
-        <file>ZNC DTELLA-#alternateuniverse</file>
-        <file>ZNC DTELLA-#apples</file>
-        <file>ZNC DTELLA-#dtella</file>
-        <file>ZNC DTELLA-#dtella2.0</file>
-        <file>ZNC DTELLA-#dtella-help</file>
-        <file>ZNC DTELLA-#homework</file>
-        <file>ZNC DTELLA-#releaseteam</file>
-        <file>znc dhirc backup-#alternateuniverse</file>
-        <file>znc dhirc backup-#dtella</file>
-        <file>znc dhirc backup-#dtella2.0</file>
-        <file>znc dhirc backup-#releaseteam</file>
-        <file>ZNC DTELLA-#rapterverse</file>
-        <file>znc dhirc backup-#rapterverse</file>
-        <file>NETWORK-#rapterverse</file>
-        <file>New Network-#rapterverse</file>
-        <file>ZNC DTELLA-#norahjaallowed</file>
-        <file>ZNC DTELLA-#SirMatthias</file>
-        <file>New Network-#dtella</file>
-        <file>dtella-#releaseteam</file>
-        <file>dtella-#dtella</file>
-        <file>dtella-#alternateuniverse</file>
-        <file>NETWORK-#dtella</file>
-        
-        
-        <file>NETWORK-#asylum</file>
-        <file>NETWORK-#PreToMe</file>
-        <file>ZNC PTM-#asylum</file>
-        <file>ZNC PTM-#PreToMe</file>
-        <file>ZNC TL-#torrentleech</file>
-        <file>ZNC GFT-#gftracker</file>
+        <file>testLines.txt</file>
+
     </importsettings>
 
 

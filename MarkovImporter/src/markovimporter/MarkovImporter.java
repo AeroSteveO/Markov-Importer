@@ -54,12 +54,13 @@ public class MarkovImporter {
 //            System.out.printf(removedStamps.get(i)+"\n");
         
         System.out.printf("Parsed %d lines\n", parsedLogs.size()); //Printing out some stats on the imported lines
-        for (int i=0;i<3;i++)
-            System.out.printf(parsedLogs.get(i)+"\n");//Printing out some example lines
+//        for (int i=0;i<3;i++)
+//            System.out.printf(parsedLogs.get(i)+"\n");//Printing out some example lines
         
         File oddFile = new File("ImportedMarkov");
         Borg.saveWords(oddFile);
-        
+        for (int i=0;i<parsedLogs.size();i++)
+            System.out.println(parsedLogs.get(i));
     }
     public static ArrayList<String> getBotList() throws FileNotFoundException{
         try{
@@ -102,8 +103,8 @@ public class MarkovImporter {
             Element eElement = (Element) dBuilder.parse(fXmlFile).getElementsByTagName("importsettings").item(0);
             for (int i=0;i<eElement.getElementsByTagName("file").getLength();i++)
             {
-                IrcLogList.add(eElement.getElementsByTagName("file").item(i).getTextContent()+".log");
-            }
+                IrcLogList.add(eElement.getElementsByTagName("file").item(i).getTextContent());// +".log" to support multiple filetypes and log import methods, the file extension will be stored in the XML
+            }                                                                                   // File extension will determine parsing method
             return (IrcLogList);
         }
         catch (Exception ex) {
@@ -126,7 +127,7 @@ public class MarkovImporter {
                 wordfile.close();
             } catch (FileNotFoundException ex) {
                 ex.printStackTrace();
-                System.out.printf(fileName+"\n");
+//                System.out.printf(fileName+"\n");
                 return null;
             }
         }
@@ -164,15 +165,18 @@ public class MarkovImporter {
                 for(int c = 2;c<line.length;c++){
                     formedLine = formedLine +" "+ line[c];
                 }
+                System.out.println(formedLine);
                 if (line[0].length()>2){
-                    String nick = line[0].substring(1,line[0].length()-2);
+//                    System.out.println(line);
+                    String nick = line[0].substring(1,line[0].length()-2).replaceAll("(-|>)", "");
+                    System.out.println(nick);
                     if (!isBot(nick)&&
                             !formedLine.toLowerCase().startsWith("tehfire")&&
                             !formedLine.toLowerCase().startsWith("tehreq")&&
                             !formedLine.startsWith("!")&&
                             !formedLine.startsWith(".")&&
                             !formedLine.toLowerCase().startsWith("zelda")&&
-                            !formedLine.toLowerCase().startsWith("Wheatley, ")&&
+                            !formedLine.toLowerCase().startsWith("wheatley, ")&&
                             !Pattern.matches("[a-zA-Z_0-9]+?", formedLine.toLowerCase())&&
                             !Pattern.matches("[a-zA-Z]{1}", formedLine)&&
                             !formedLine.toLowerCase().startsWith("The TV listings for ")&&
