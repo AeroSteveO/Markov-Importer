@@ -185,8 +185,8 @@ public class MarkovImporter {
 //                        nick = nick.split("<")[nick.split("<").length-1].trim(); // .replaceAll("-","") useless
 //                    }
 //                    String nick = line[0].substring(1,line[0].length()-2).replaceAll("(-|>)", "");
-                    System.out.println(rawlog.get(i).replaceAll("\\s+"," "));
-                    System.out.println(nick);
+//                    System.out.println(rawlog.get(i).replaceAll("\\s+"," "));
+//                    System.out.println(nick);
                     if (!isBot(nick)&&
 //                            !formedLine.toLowerCase().startsWith("tehfire")&&
 //                            !formedLine.toLowerCase().startsWith("tehreq")&&
