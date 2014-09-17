@@ -59,8 +59,8 @@ public class MarkovImporter {
         
         File oddFile = new File("ImportedMarkov");
         Borg.saveWords(oddFile);
-        for (int i=0;i<parsedLogs.size();i++)
-            System.out.println(parsedLogs.get(i));
+//        for (int i=0;i<parsedLogs.size();i++)
+//            System.out.println(parsedLogs.get(i));
     }
     public static ArrayList<String> getBotList() throws FileNotFoundException{
         try{
@@ -122,7 +122,7 @@ public class MarkovImporter {
                 
                 Scanner wordfile = new Scanner(new File(fileName));
                 while (wordfile.hasNextLine()){
-                    log.add(wordfile.nextLine());
+                    log.add(wordfile.nextLine().trim());
                 }
                 wordfile.close();
             } catch (FileNotFoundException ex) {
@@ -153,22 +153,30 @@ public class MarkovImporter {
     public static ArrayList<String> parseBadLines(ArrayList<String> rawlog) throws FileNotFoundException{
         ArrayList<String> log = new ArrayList<String>();
         for (int i = 0;i<rawlog.size();i++){
-            String[] line = rawlog.get(i).split(" ");
+            String[] line = rawlog.get(i).replaceAll("\\s+"," ").split(" ");
             String formedLine;
             if (line.length>2){
+                int startLoop;
                 if(Pattern.matches("\\[[0-9][0-9]:[0-9][0-9]:[0-9][0-9]\\]",line[1])){
                     formedLine = line[2];
+                    startLoop = 3;
                 }
                 else{
                     formedLine = line[1];
+                    startLoop = 2;
                 }
-                for(int c = 2;c<line.length;c++){
+                for(int c = startLoop;c<line.length;c++){
                     formedLine = formedLine +" "+ line[c];
                 }
-                System.out.println(formedLine);
+                
                 if (line[0].length()>2){
 //                    System.out.println(line);
-                    String nick = line[0].substring(1,line[0].length()-2).replaceAll("(-|>)", "");
+//                    System.out.println(line[0]);
+                    String nick = rawlog.get(i).replaceAll("\\s+"," ").split(">",2)[0];
+//                    System.out.prinln(nick);
+                    nick = nick.split("<")[nick.split("<").length-1].replaceAll("-","").trim();
+//                    String nick = line[0].substring(1,line[0].length()-2).replaceAll("(-|>)", "");
+                    System.out.println(rawlog.get(i).replaceAll("\\s+"," "));
                     System.out.println(nick);
                     if (!isBot(nick)&&
                             !formedLine.toLowerCase().startsWith("tehfire")&&
