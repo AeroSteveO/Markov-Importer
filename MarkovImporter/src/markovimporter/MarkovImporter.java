@@ -188,18 +188,18 @@ public class MarkovImporter {
                     System.out.println(rawlog.get(i).replaceAll("\\s+"," "));
                     System.out.println(nick);
                     if (!isBot(nick)&&
-                            !formedLine.toLowerCase().startsWith("tehfire")&&
-                            !formedLine.toLowerCase().startsWith("tehreq")&&
+//                            !formedLine.toLowerCase().startsWith("tehfire")&&
+//                            !formedLine.toLowerCase().startsWith("tehreq")&&
                             !formedLine.startsWith("!")&&
                             !formedLine.startsWith(".")&&
-                            !formedLine.toLowerCase().startsWith("zelda")&&
+//                            !formedLine.toLowerCase().startsWith("zelda")&&
                             !formedLine.toLowerCase().startsWith("wheatley, ")&&
                             !Pattern.matches("[a-zA-Z_0-9]+?", formedLine.toLowerCase())&&
                             !Pattern.matches("[a-zA-Z]{1}", formedLine)&&
                             !Pattern.matches("(matraptor|matrapter)[0-9]{0,}", nick.toLowerCase())&&
-                            !formedLine.toLowerCase().startsWith("The TV listings for ")&&
-                            !Pattern.matches("[a-zA-Z_0-9]+\\++", formedLine.toLowerCase())&&
-                            !formedLine.toLowerCase().startsWith("bit.ly url")){
+                            !formedLine.toLowerCase().startsWith("the tv listings for ")&&
+                            !Pattern.matches("[a-zA-Z_0-9]+\\++", formedLine.toLowerCase())){
+//                            !formedLine.toLowerCase().startsWith("bit.ly url")){
                         log.add(formedLine.trim());
                     }
                 }
