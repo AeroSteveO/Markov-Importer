@@ -20,7 +20,7 @@ import org.w3c.dom.Element;
  *
  * @author Stephen
  * Imports Xchat IRC logs into jborg, a java port of seeborg
- * 
+ *
  */
 public class MarkovImporter {
     static ArrayList<String> botlist = null;
@@ -59,8 +59,8 @@ public class MarkovImporter {
         
         File oddFile = new File("ImportedMarkov");
         Borg.saveWords(oddFile);
-//        for (int i=0;i<parsedLogs.size();i++)
-//            System.out.println(parsedLogs.get(i));
+        for (int i=0;i<parsedLogs.size();i++)
+            System.out.println(parsedLogs.get(i));
     }
     public static ArrayList<String> getBotList() throws FileNotFoundException{
         try{
@@ -170,11 +170,20 @@ public class MarkovImporter {
                 }
                 
                 if (line[0].length()>2){
+                    String nick=rawlog.get(i).trim().replaceAll("\\s+"," ").split(" ")[0].replaceAll("(<|>|\\||-)","");
 //                    System.out.println(line);
 //                    System.out.println(line[0]);
-                    String nick = rawlog.get(i).replaceAll("\\s+"," ").split(">",2)[0];
-//                    System.out.prinln(nick);
-                    nick = nick.split("<")[nick.split("<").length-1].replaceAll("-","").trim();
+                    
+                    
+                    
+//                    if (rawlog.get(i).replaceAll("\\s+"," ").startsWith("-")){
+//                        nick = rawlog.get(i).replaceAll("\\s+"," ").split("-")[1];
+//                        nick = nick.split("-")[nick.split("-").length-1].trim();
+//                    }else{
+//                        nick = rawlog.get(i).replaceAll("\\s+"," ").split(">",2)[0];
+////                    System.out.prinln(nick);
+//                        nick = nick.split("<")[nick.split("<").length-1].trim(); // .replaceAll("-","") useless
+//                    }
 //                    String nick = line[0].substring(1,line[0].length()-2).replaceAll("(-|>)", "");
                     System.out.println(rawlog.get(i).replaceAll("\\s+"," "));
                     System.out.println(nick);
@@ -187,6 +196,7 @@ public class MarkovImporter {
                             !formedLine.toLowerCase().startsWith("wheatley, ")&&
                             !Pattern.matches("[a-zA-Z_0-9]+?", formedLine.toLowerCase())&&
                             !Pattern.matches("[a-zA-Z]{1}", formedLine)&&
+                            !Pattern.matches("(matraptor|matrapter)[0-9]{0,}", nick.toLowerCase())&&
                             !formedLine.toLowerCase().startsWith("The TV listings for ")&&
                             !Pattern.matches("[a-zA-Z_0-9]+\\++", formedLine.toLowerCase())&&
                             !formedLine.toLowerCase().startsWith("bit.ly url")){
