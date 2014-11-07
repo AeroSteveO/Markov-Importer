@@ -14,23 +14,27 @@
     <ignorebots id="dtella">
         <bot>NickServ</bot>
         <bot>ChanServ</bot>
+        <bot>BotServ</bot>
+        <bot>modman</bot>
+
         <bot>***</bot>
         
         <bot>BlarghleBot</bot>
         <bot>theTardis</bot>
         <bot>Pankeiko</bot>
         <bot>Poopsock</bot>
-        <bot>modman</bot>
         <bot>srsbsns</bot>
         <bot>Hermes</bot>
         <bot>Galois</bot>
         <bot>Jarvis</bot>
+        <bot>|Jarvis</bot>
         <bot>pepperoni</bot>
         <bot>peetsa</bot>
         <bot>samwisegamgee</bot>
         <bot>Sonny</bot>
         <bot>LilWayne</bot>
         <bot>magikarp</bot>
+        <bot>|magikarp</bot>
         <bot>stats</bot>
         <bot>|DtellaBridge</bot>
         <bot>Shepard</bot>
@@ -62,10 +66,4 @@
 	<bot>r0b0t_1x</bot>
         
     </ignorebots>
-    <importsettings>
-        <file>testLines.txt</file>
-
-    </importsettings>
-
-
 </settings>
