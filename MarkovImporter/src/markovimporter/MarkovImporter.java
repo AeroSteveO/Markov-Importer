@@ -20,6 +20,14 @@ import org.w3c.dom.Element;
  *
  * @author Stephen
  * Imports Xchat IRC logs into jborg, a java port of seeborg
+ * 
+ * Requirements:
+ * - APIs
+ *    JBORG (https://code.google.com/p/jborg/)
+ * - Custom Objects
+ *    N/A
+ * - Linked Classes
+ *    N/A
  *
  */
 public class MarkovImporter {
@@ -114,45 +122,45 @@ public class MarkovImporter {
         return(bot);
     }
     
-    public static ArrayList<String> getLogList() throws FileNotFoundException{
-        try{
-            ArrayList<String> IrcLogList = new ArrayList<String>();
-            File fXmlFile = new File("SettingMarkov.xml");
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Element eElement = (Element) dBuilder.parse(fXmlFile).getElementsByTagName("importsettings").item(0);
-            for (int i=0;i<eElement.getElementsByTagName("file").getLength();i++)
-            {
-                IrcLogList.add(eElement.getElementsByTagName("file").item(i).getTextContent());// +".log" to support multiple filetypes and log import methods, the file extension will be stored in the XML
-            }                                                                                  // File extension will determine parsing method
-            return (IrcLogList);
-        }
-        catch (Exception ex) {
-            ex.printStackTrace();
-            return(null);
-        }
-    }
-    public static ArrayList<String> getLogs(ArrayList<String> fileNameList) throws FileNotFoundException{
-        ArrayList<String> log = new ArrayList<String>();
-        String fileName = null;
-        
-        for(int i=0;i<fileNameList.size();i++){
-            try{
-                fileName = fileNameList.get(i);
-                
-                Scanner wordfile = new Scanner(new File(fileName));
-                while (wordfile.hasNextLine()){
-                    log.add(wordfile.nextLine().trim());
-                }
-                wordfile.close();
-            } catch (FileNotFoundException ex) {
-                ex.printStackTrace();
-//                System.out.printf(fileName+"\n");
-                return null;
-            }
-        }
-        return (log);
-    }
+//    public static ArrayList<String> getLogList() throws FileNotFoundException{
+//        try{
+//            ArrayList<String> IrcLogList = new ArrayList<String>();
+//            File fXmlFile = new File("SettingMarkov.xml");
+//            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+//            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+//            Element eElement = (Element) dBuilder.parse(fXmlFile).getElementsByTagName("importsettings").item(0);
+//            for (int i=0;i<eElement.getElementsByTagName("file").getLength();i++)
+//            {
+//                IrcLogList.add(eElement.getElementsByTagName("file").item(i).getTextContent());// +".log" to support multiple filetypes and log import methods, the file extension will be stored in the XML
+//            }                                                                                  // File extension will determine parsing method
+//            return (IrcLogList);
+//        }
+//        catch (Exception ex) {
+//            ex.printStackTrace();
+//            return(null);
+//        }
+//    }
+//    public static ArrayList<String> getLogs(ArrayList<String> fileNameList) throws FileNotFoundException{
+//        ArrayList<String> log = new ArrayList<String>();
+//        String fileName = null;
+//        
+//        for(int i=0;i<fileNameList.size();i++){
+//            try{
+//                fileName = fileNameList.get(i);
+//                
+//                Scanner wordfile = new Scanner(new File(fileName));
+//                while (wordfile.hasNextLine()){
+//                    log.add(wordfile.nextLine().trim());
+//                }
+//                wordfile.close();
+//            } catch (FileNotFoundException ex) {
+//                ex.printStackTrace();
+////                System.out.printf(fileName+"\n");
+//                return null;
+//            }
+//        }
+//        return (log);
+//    }
     public static ArrayList<String> removeTimeStamp(ArrayList<String> rawlog) throws FileNotFoundException{
         ArrayList<String> log = new ArrayList<String>();
         for (int i = 0;i<rawlog.size();i++)
