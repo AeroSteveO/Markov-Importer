@@ -62,12 +62,13 @@ public class MarkovImporter {
                 unParsedLogs.addAll(loadLogFile(fileList.get(i)));
         }
         
+        ArrayList<String> parsedPlogs = parsePlogs(pircBotLogs);
         ArrayList<String> parsedLogs = parseBadLines(removeTimeStamp(xChatLogs));//The heart of the parsing
         
+        ArrayList<String> combinedLogs = combineArrays(parsedPlogs, parsedLogs);
         
-        
-        for (int i=0;i<parsedLogs.size();i++)
-            Borg.learn(parsedLogs.get(i));
+        for (int i=0;i<combinedLogs.size();i++)
+            Borg.learn(combinedLogs.get(i));
         
         
 //        System.out.printf("Parsed %d lines\n", rawLogs.size());
@@ -143,11 +144,11 @@ public class MarkovImporter {
 //    public static ArrayList<String> getLogs(ArrayList<String> fileNameList) throws FileNotFoundException{
 //        ArrayList<String> log = new ArrayList<String>();
 //        String fileName = null;
-//        
+//
 //        for(int i=0;i<fileNameList.size();i++){
 //            try{
 //                fileName = fileNameList.get(i);
-//                
+//
 //                Scanner wordfile = new Scanner(new File(fileName));
 //                while (wordfile.hasNextLine()){
 //                    log.add(wordfile.nextLine().trim());
@@ -178,6 +179,40 @@ public class MarkovImporter {
             }
         return(log);
     }
+    public static ArrayList<String> parsePlogs(ArrayList<String> rawlog) throws FileNotFoundException{
+        ArrayList<String> log = new ArrayList<String>();
+        
+        for (int i = 0;i<rawlog.size();i++){
+            if (!rawlog.get(i).isEmpty()){
+                
+                System.out.println(rawlog.get(i).trim());
+                
+                String[] line = rawlog.get(i).replaceAll("\\s+"," ").trim().split(" ",2);
+                if (line.length!=1){
+                    String formedLine = line[1];
+                    if (!line[0].equalsIgnoreCase("*")){
+                        String nick = line[0].replaceAll("(<|>|\\||-)","");
+                        if (!isBot(nick)&&
+                                !formedLine.startsWith("!")&&
+                                !formedLine.startsWith(".")&&
+                                !formedLine.toLowerCase().startsWith("wheatley, ")&&
+                                !Pattern.matches("[a-zA-Z_0-9]+?", formedLine.toLowerCase())&&
+                                !Pattern.matches("[a-zA-Z]{1}", formedLine)&&
+                                !Pattern.matches("(matraptor|matrapter)[0-9]{0,}", nick.toLowerCase())&&
+                                !formedLine.toLowerCase().startsWith("the tv listings for ")&&
+                                !Pattern.matches("[a-zA-Z_0-9]+\\++", formedLine.toLowerCase())){
+                            
+                            if (!containsIgnoreCase(log,formedLine.trim())){
+                                log.add(formedLine.trim());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return log;
+    }
+    
     
     public static ArrayList<String> parseBadLines(ArrayList<String> rawlog) throws FileNotFoundException{
         ArrayList<String> log = new ArrayList<String>();
@@ -262,5 +297,16 @@ public class MarkovImporter {
             }
         }
         return (false);
+    }
+
+    private static ArrayList<String> combineArrays(ArrayList<String> logA, ArrayList<String> logB) {
+        ArrayList<String>combined = new ArrayList<>();
+        combined.addAll(logB);
+        for (int i=0;i<logA.size();i++){
+            if (!containsIgnoreCase(logB,logA.get(i))){
+                combined.add(logA.get(i));
+            }
+        }
+        return(combined);
     }
 }
